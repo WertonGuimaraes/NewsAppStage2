@@ -1,5 +1,7 @@
 package com.udacity.wertonguimaraes.newsapp.request;
 
+import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -7,6 +9,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import static android.content.ContentValues.TAG;
 
 public class Request {
     private static final String BASE_URL = "http://content.guardianapis.com/search?q=debates&api-key=test&order-by=newest&show-fields=byline";
@@ -24,7 +28,11 @@ public class Request {
         }
 
         HttpURLConnection urlConnection = openConection();
-        jsonData = getJsonData(urlConnection);
+        if (urlConnection.getResponseCode() == 200) {
+            jsonData = getJsonData(urlConnection);
+        } else {
+            Log.e(TAG, "Error response code: " + urlConnection.getResponseCode());
+        }
         closeConection(urlConnection);
 
         return jsonData;

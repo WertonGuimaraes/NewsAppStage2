@@ -23,7 +23,7 @@ public class InfoListAdapter extends RecyclerView.Adapter<InfoListAdapter.ViewHo
 
     private List<Info> mInfoList;
 
-    public InfoListAdapter(Context context, List<Info> infoList) {
+    public InfoListAdapter(List<Info> infoList) {
         mInfoList = infoList;
     }
 

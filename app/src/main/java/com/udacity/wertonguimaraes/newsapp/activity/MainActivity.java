@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity implements
     private static int LOADER_ID = 0;
 
     private RecyclerView mRvItem;
-    private InfoListAdapter mAdapter;
+    private InfoListAdapter mNewsAdapter;
     private SwipeRefreshLayout nSwipe;
     private SwipeRefreshLayout nSwipeEmpty;
 
@@ -59,11 +59,11 @@ public class MainActivity extends AppCompatActivity implements
         nSwipeEmpty.setRefreshing(false);
 
         mRvItem.setLayoutManager(new LinearLayoutManager(this));
-        if (data.size() > 0) {
+        if (data != null && data.size() > 0) {
             nSwipeEmpty.setVisibility(View.GONE);
             nSwipe.setVisibility(View.VISIBLE);
-            mAdapter = new InfoListAdapter(this, data);
-            mRvItem.setAdapter(mAdapter);
+            mNewsAdapter = new InfoListAdapter(data);
+            mRvItem.setAdapter(mNewsAdapter);
         } else {
             nSwipeEmpty.setVisibility(View.VISIBLE);
             nSwipe.setVisibility(View.GONE);
