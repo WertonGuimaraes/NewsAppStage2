@@ -85,10 +85,14 @@ public class MainActivity extends AppCompatActivity implements
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 
         if (networkInfo != null && networkInfo.isConnected()) {
+            nSwipeEmpty.setVisibility(View.GONE);
+            nSwipe.setVisibility(View.VISIBLE);
             loaderManager.forceLoad();
         } else {
             nSwipe.setRefreshing(false);
             nSwipeEmpty.setRefreshing(false);
+            nSwipeEmpty.setVisibility(View.VISIBLE);
+            nSwipe.setVisibility(View.GONE);
             Toast.makeText(getApplicationContext(), getString(R.string.no_connection), Toast.LENGTH_LONG).show();
         }
     }

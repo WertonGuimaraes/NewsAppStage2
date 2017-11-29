@@ -42,31 +42,31 @@ public class InfoListAdapter extends RecyclerView.Adapter<InfoListAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Info info = mInfoList.get(position);
-        holder.titleView.setText(info.getTitle());
-        holder.sectionView.setText(info.getSection());
-        holder.dateView.setText(info.getWebPublicationDate());
-        holder.authorView.setText(info.getAuthor());
+        holder.mTitleView.setText(info.getTitle());
+        holder.mSectionView.setText(info.getSection());
+        holder.mDateView.setText(info.getWebPublicationDate());
+        holder.mAuthorView.setText(info.getAuthor());
 
-        if (info.getWebPublicationDate().trim().equals("")) {
-            holder.dateView.setVisibility(View.GONE);
+        if (info.getWebPublicationDate().isEmpty()) {
+            holder.mDateView.setVisibility(View.GONE);
         }
-        if (info.getAuthor().trim().equals("")) {
-            holder.authorView.setVisibility(View.GONE);
+        if (info.getAuthor().isEmpty()) {
+            holder.mAuthorView.setVisibility(View.GONE);
         }
     }
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private TextView titleView;
-        private TextView sectionView;
-        private TextView dateView;
-        private TextView authorView;
+        private TextView mTitleView;
+        private TextView mSectionView;
+        private TextView mDateView;
+        private TextView mAuthorView;
 
         private ViewHolder(View view) {
             super(view);
-            titleView = (TextView) view.findViewById(R.id.title);
-            sectionView = (TextView) view.findViewById(R.id.section);
-            dateView = (TextView) view.findViewById(R.id.date);
-            authorView = (TextView) view.findViewById(R.id.author);
+            mTitleView = (TextView) view.findViewById(R.id.news_title);
+            mSectionView = (TextView) view.findViewById(R.id.news_section);
+            mDateView = (TextView) view.findViewById(R.id.news_date);
+            mAuthorView = (TextView) view.findViewById(R.id.news_author);
 
             view.setOnClickListener(this);
         }
