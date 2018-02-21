@@ -1,14 +1,19 @@
 package com.udacity.wertonguimaraes.newsapp.activity;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -27,8 +32,9 @@ public class MainActivity extends AppCompatActivity implements
 
     private RecyclerView mRvItem;
     private InfoListAdapter mNewsAdapter;
-    private SwipeRefreshLayout nSwipe;
-    private SwipeRefreshLayout nSwipeEmpty;
+    private SwipeRefreshLayout mSwipe;
+    private SwipeRefreshLayout mSwipeEmpty;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,16 +42,34 @@ public class MainActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_main);
 
         mRvItem = (RecyclerView) findViewById(R.id.recycler_view);
-        nSwipe = (SwipeRefreshLayout) findViewById(R.id.refresh);
-        nSwipeEmpty = (SwipeRefreshLayout) findViewById(R.id.refresh_empty);
+        mSwipe = (SwipeRefreshLayout) findViewById(R.id.refresh);
+        mSwipeEmpty = (SwipeRefreshLayout) findViewById(R.id.refresh_empty);
 
-        nSwipeEmpty.setVisibility(View.GONE);
-        nSwipe.setVisibility(View.GONE);
+        mSwipeEmpty.setVisibility(View.GONE);
+        mSwipe.setVisibility(View.GONE);
 
-        nSwipe.setOnRefreshListener(this);
-        nSwipeEmpty.setOnRefreshListener(this);
+        mSwipe.setOnRefreshListener(this);
+        mSwipeEmpty.setOnRefreshListener(this);
 
         startOrRestartLoaderCustom(getSupportLoaderManager().initLoader(LOADER_ID, null, this));
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                Intent i = new Intent(this, SettingsPrefActivity.class);
+                startActivity(i);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
@@ -55,18 +79,18 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onLoadFinished(Loader<List<Info>> loader, List<Info> data) {
-        nSwipe.setRefreshing(false);
-        nSwipeEmpty.setRefreshing(false);
+        mSwipe.setRefreshing(false);
+        mSwipeEmpty.setRefreshing(false);
 
         mRvItem.setLayoutManager(new LinearLayoutManager(this));
         if (data != null && data.size() > 0) {
-            nSwipeEmpty.setVisibility(View.GONE);
-            nSwipe.setVisibility(View.VISIBLE);
+            mSwipeEmpty.setVisibility(View.GONE);
+            mSwipe.setVisibility(View.VISIBLE);
             mNewsAdapter = new InfoListAdapter(data);
             mRvItem.setAdapter(mNewsAdapter);
         } else {
-            nSwipeEmpty.setVisibility(View.VISIBLE);
-            nSwipe.setVisibility(View.GONE);
+            mSwipeEmpty.setVisibility(View.VISIBLE);
+            mSwipe.setVisibility(View.GONE);
         }
     }
 
@@ -85,15 +109,21 @@ public class MainActivity extends AppCompatActivity implements
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 
         if (networkInfo != null && networkInfo.isConnected()) {
-            nSwipeEmpty.setVisibility(View.GONE);
-            nSwipe.setVisibility(View.VISIBLE);
+            mSwipeEmpty.setVisibility(View.GONE);
+            mSwipe.setVisibility(View.VISIBLE);
             loaderManager.forceLoad();
         } else {
-            nSwipe.setRefreshing(false);
-            nSwipeEmpty.setRefreshing(false);
-            nSwipeEmpty.setVisibility(View.VISIBLE);
-            nSwipe.setVisibility(View.GONE);
+            mSwipe.setRefreshing(false);
+            mSwipeEmpty.setRefreshing(false);
+            mSwipeEmpty.setVisibility(View.VISIBLE);
+            mSwipe.setVisibility(View.GONE);
             Toast.makeText(getApplicationContext(), getString(R.string.no_connection), Toast.LENGTH_LONG).show();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        startOrRestartLoaderCustom(getSupportLoaderManager().restartLoader(LOADER_ID, null, this));
     }
 }

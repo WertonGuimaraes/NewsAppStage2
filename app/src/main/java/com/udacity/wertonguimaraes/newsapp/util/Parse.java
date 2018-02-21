@@ -27,7 +27,10 @@ public class Parse {
             String title = newsJson.getString("webTitle");
             String section = newsJson.getString("sectionName");
             String webPublicationDate = newsJson.optString("webPublicationDate");
-            String author = newsJson.getJSONObject("fields").optString("byline");
+            String author = "";
+            if (newsJson.has("fields")) {
+                author = newsJson.getJSONObject("fields").optString("byline");
+            }
             String webUrl = newsJson.optString("webUrl");
 
             infoObjects.add(new Info(title, section, webPublicationDate, author, webUrl));

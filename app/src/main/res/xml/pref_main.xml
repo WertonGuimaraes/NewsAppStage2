@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="@string/general_settings">
+        <EditTextPreference
+            android:defaultValue="@string/default_subject"
+            android:key="@string/key_subject_name"
+            android:summary="@string/default_subject"
+            android:title="@string/title_subject" />
+
+        <ListPreference
+            android:defaultValue="@string/value_relevance"
+            android:dialogTitle="@string/title_order_by"
+            android:entries="@array/pref_order_by_entries"
+            android:entryValues="@array/pref_order_by_values"
+            android:key="@string/key_order_by"
+            android:summary="@string/value_relevance"
+            android:title="@string/title_order_by" />
+
+        <ListPreference
+            android:defaultValue="@string/value_default_page_size"
+            android:dialogTitle="@string/title_page_size"
+            android:entries="@array/pref_page_size_entries"
+            android:entryValues="@array/pref_page_size_values"
+            android:key="@string/key_page_size"
+            android:summary="@string/value_default_page_size"
+            android:title="@string/title_page_size" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

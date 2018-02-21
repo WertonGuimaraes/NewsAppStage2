@@ -13,11 +13,17 @@ import java.net.URL;
 import static android.content.ContentValues.TAG;
 
 public class Request {
-    private static final String BASE_URL = "http://content.guardianapis.com/search?q=debates&api-key=test&order-by=newest&show-fields=byline";
     private URL mURL;
 
-    public Request() throws MalformedURLException {
-        mURL = new URL(BASE_URL);
+    public Request(String subject, String orderBy, String pageSize) throws MalformedURLException {
+        String baseUrl = "http://content.guardianapis.com/search?" +
+                "q=" + subject +
+                "&api-key=test" +
+                "&order-by=" + orderBy +
+                "&page-size=" + pageSize +
+                "&show-fields=byline";
+
+        mURL = new URL(baseUrl);
     }
 
     public String getInfoInURL() throws IOException {
